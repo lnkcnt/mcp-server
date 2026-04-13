@@ -65,7 +65,7 @@ server.registerTool(
             id: z.optional(z.nanoid()),
             redirect_url: z.optional(z.httpUrl()),
             click_count: z.optional(z.number().nonnegative()),
-            clicks: z.optional(z.iso.date()),
+            clicks: z.optional(z.array(z.iso.datetime())),
             error: z.optional(
                 z.enum([
                     "Internal server error",

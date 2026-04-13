@@ -1,23 +1,33 @@
 {
-  "name": "lnkcnt-mcp-server",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc -p tsconfig.json",
-    "start": "node dist/index.js"
-  },
-  "packageManager": "pnpm@10.33.0",
-  "dependencies": {
-    "@cfworker/json-schema": "^4.1.1",
-    "@modelcontextprotocol/server": "2.0.0-alpha.2",
-    "ky": "^2.0.0",
-    "zod": "^4.3.6"
-  },
-  "devDependencies": {
-    "@modelcontextprotocol/client": "2.0.0-alpha.2",
-    "@types/node": "^25.6.0",
-    "tsx": "^4.21.0",
-    "typescript": "^6.0.2"
-  }
+    "name": "lnkcnt-mcp-server",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "tsx watch src/index.ts",
+        "start": "node src/index.ts",
+        "lint": "eslint .",
+        "fmt": "prettier . --write"
+    },
+    "packageManager": "pnpm@10.33.0",
+    "dependencies": {
+        "@cfworker/json-schema": "^4.1.1",
+        "@modelcontextprotocol/server": "2.0.0-alpha.2",
+        "ky": "^2.0.0",
+        "zod": "^4.3.6"
+    },
+    "devDependencies": {
+        "@eslint/css": "^1.1.0",
+        "@eslint/js": "^10.0.1",
+        "@eslint/json": "^1.2.0",
+        "@eslint/markdown": "^8.0.1",
+        "@modelcontextprotocol/client": "2.0.0-alpha.2",
+        "@types/node": "^25.6.0",
+        "eslint": "^10.2.0",
+        "globals": "^17.5.0",
+        "jiti": "^2.6.1",
+        "prettier": "3.8.2",
+        "tsx": "^4.21.0",
+        "typescript": "^6.0.2",
+        "typescript-eslint": "^8.58.2"
+    }
 }

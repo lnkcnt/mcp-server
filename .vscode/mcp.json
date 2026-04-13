@@ -4,7 +4,7 @@
 			"type": "stdio",
 			"command": "pnpm",
 			"args": [
-				"dev",
+				"start",
 				"http://localhost:3000"
 			]
 		}

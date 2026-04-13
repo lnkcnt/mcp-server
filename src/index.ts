@@ -74,7 +74,7 @@ server.registerTool(
     },
     async ({ url }) => {
         const requestUrl = `${args[0]}/api/url/shorten`;
-        console.log(`Sending POST request to '${requestUrl}'...`);
+        // console.log(`Sending POST request to '${requestUrl}'...`);
         const output = await ky.post(`${args[0]}/api/url/shorten`, {
             json: { url },
         });
@@ -107,7 +107,7 @@ server.registerTool(
     },
     async ({ id }) => {
         const requestUrl = `${args[0]}/api/url/manage?id=${id}`;
-        console.log(`Sending GET request to '${requestUrl}'...`);
+        // console.log(`Sending GET request to '${requestUrl}'...`);
         const output = await ky.get(requestUrl);
         return {
             content: [{ type: "text", text: JSON.stringify(output.json()) }],
@@ -151,7 +151,7 @@ server.registerTool(
     },
     async ({ id, reason, message }) => {
         const requestUrl = `${args[0]}/api/report`;
-        console.log(`Sending POST request to '${requestUrl}'...`);
+        // console.log(`Sending POST request to '${requestUrl}'...`);
         const output = await ky.post(requestUrl, {
             json: { id, reason, message },
         });
@@ -181,7 +181,7 @@ server.registerTool(
     },
     async ({ id, startYear, startMonth, endYear, endMonth }) => {
         const requestUrl = `${args[0]}/api/charts`;
-        console.log(`Sending POST request to '${requestUrl}'...`);
+        // console.log(`Sending POST request to '${requestUrl}'...`);
         const output = await ky.post(requestUrl, {
             json: { id, startYear, startMonth, endYear, endMonth },
         });

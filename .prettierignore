@@ -1,1 +1,3 @@
 .agents/
+pnpm-lock.yaml
+pnpm-workspace.yaml

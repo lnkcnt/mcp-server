@@ -13,7 +13,7 @@ const server = new McpServer(
         instructions:
             "You can use this MCP server to communicate with lnkcnt (link shortener + click counter).\n" +
             "If you need a management page ID, use `shorten_url` tool to get one.",
-    },
+    }
 );
 
 server.registerTool(
@@ -37,7 +37,7 @@ server.registerTool(
                 z.object({
                     errors: z.array(z.string()),
                     properties: z.optional(z.array(z.string())),
-                }),
+                })
             ),
         }),
     },
@@ -52,7 +52,7 @@ server.registerTool(
             content: [{ type: "text", text: JSON.stringify(data) }],
             structuredContent: data,
         };
-    },
+    }
 );
 
 server.registerTool(
@@ -72,7 +72,7 @@ server.registerTool(
                     "Link not found",
                     "Link data not found",
                     "Bad Request: id required",
-                ]),
+                ])
             ),
         }),
     },
@@ -85,7 +85,7 @@ server.registerTool(
             content: [{ type: "text", text: JSON.stringify(data) }],
             structuredContent: data,
         };
-    },
+    }
 );
 
 server.registerTool(
@@ -118,7 +118,7 @@ server.registerTool(
                     "Invalid values",
                     "Link not found",
                     "Missing required fields",
-                ]),
+                ])
             ),
         }),
     },
@@ -133,7 +133,7 @@ server.registerTool(
             content: [{ type: "text", text: JSON.stringify(data) }],
             structuredContent: data,
         };
-    },
+    }
 );
 
 server.registerTool(
@@ -151,7 +151,7 @@ server.registerTool(
         }),
         outputSchema: z.object({
             data: z.array(
-                z.object({ date: z.iso.date(), sum: z.number().nonnegative() }),
+                z.object({ date: z.iso.date(), sum: z.number().nonnegative() })
             ),
         }),
     },
@@ -166,7 +166,7 @@ server.registerTool(
             content: [{ type: "text", text: JSON.stringify(data) }],
             structuredContent: data,
         };
-    },
+    }
 );
 
 async function main() {

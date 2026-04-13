@@ -11,7 +11,8 @@ const server = new McpServer(
     },
     {
         instructions:
-            "You can use this MCP server to communicate with lnkcnt (link shortener + click counter).",
+            "You can use this MCP server to communicate with lnkcnt (link shortener + click counter).\n" +
+            "If you need a management page ID, use `shorten_url` tool to get one.",
     },
 );
 
@@ -20,7 +21,7 @@ server.registerTool(
     {
         title: "Shorten URL",
         description:
-            "Shorten a URL and returns shortened url & management page id.",
+            "Shorten a URL and returns shortened URL & Management page ID.",
         inputSchema: z.object({ url: z.httpUrl() }),
         outputSchema: z.object({
             message: z.enum([

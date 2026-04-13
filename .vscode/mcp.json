@@ -3,7 +3,10 @@
         "lnkcnt-mcp": {
             "type": "stdio",
             "command": "node",
-            "args": ["./dist/index.js", "http://localhost:3000"]
+            "args": [
+                "./src/index.ts",
+                "http://localhost:3000"
+            ]
         }
     },
     "inputs": []

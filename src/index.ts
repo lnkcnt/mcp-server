@@ -6,45 +6,12 @@ const args = process.argv.slice(2);
 
 const server = new McpServer(
     {
-        name: "lnkcnt-mcp-server",
+        name: "lnkcnt-mcp",
         version: "1.0.0",
     },
     {
         instructions:
-            "Use the tools to inspect the server status, echo text, and get the current time. The server is intentionally minimal and local-first.",
-    },
-);
-
-server.registerTool(
-    "health_check",
-    {
-        title: "Health Check",
-        description:
-            "Return a simple status payload for verifying the server is reachable.",
-        inputSchema: z.object({}).strict(),
-        outputSchema: z.object({
-            status: z.literal("ok"),
-            server: z.string(),
-            timestamp: z.string(),
-        }),
-        annotations: {
-            readOnlyHint: true,
-            destructiveHint: false,
-            idempotentHint: true,
-            openWorldHint: false,
-        },
-    },
-    async () => {
-        const output = {
-            status: "ok" as const,
-            server: "lnkcnt-mcp-server",
-            timestamp: new Date().toISOString(),
-        };
-
-        return {
-            content: [{ type: "text", text: JSON.stringify(output, null, 2) }],
-            structuredContent: output,
-        };
+            "You can use this MCP server to communicate with lnkcnt (link shortener + click counter).",
     },
 );
 
@@ -52,7 +19,8 @@ server.registerTool(
     "shorten_url",
     {
         title: "Shorten URL",
-        description: "Shorten a URL.",
+        description:
+            "Shorten a URL and returns shortened url & management page id.",
         inputSchema: z.object({ url: z.httpUrl() }),
         outputSchema: z.object({
             message: z.enum([
@@ -74,12 +42,14 @@ server.registerTool(
     },
     async ({ url }) => {
         const requestUrl = `${args[0]}/api/url/shorten`;
-        // console.log(`Sending POST request to '${requestUrl}'...`);
+        console.error(`Sending POST request to '${requestUrl}'...`);
         const output = await ky.post(`${args[0]}/api/url/shorten`, {
             json: { url },
         });
+        const data = (await output.json()) as Record<string, unknown>;
         return {
-            content: [{ type: "text", text: JSON.stringify(output.json()) }],
+            content: [{ type: "text", text: JSON.stringify(data) }],
+            structuredContent: data,
         };
     },
 );
@@ -94,7 +64,7 @@ server.registerTool(
             id: z.optional(z.nanoid()),
             redirect_url: z.optional(z.httpUrl()),
             click_count: z.optional(z.number().nonnegative()),
-            clicks: z.optional(z.date()),
+            clicks: z.optional(z.iso.date()),
             error: z.optional(
                 z.enum([
                     "Internal server error",
@@ -106,11 +76,13 @@ server.registerTool(
         }),
     },
     async ({ id }) => {
-        const requestUrl = `${args[0]}/api/url/manage?id=${id}`;
-        // console.log(`Sending GET request to '${requestUrl}'...`);
-        const output = await ky.get(requestUrl);
+        const requestUrl = `${args[0]}/api/url/manage`;
+        console.error(`Sending GET request to '${requestUrl}'...`);
+        const output = await ky.get(requestUrl, { searchParams: { id } });
+        const data = (await output.json()) as Record<string, unknown>;
         return {
-            content: [{ type: "text", text: JSON.stringify(output.json()) }],
+            content: [{ type: "text", text: JSON.stringify(data) }],
+            structuredContent: data,
         };
     },
 );
@@ -119,7 +91,7 @@ server.registerTool(
     "report_url",
     {
         title: "Report URL",
-        description: "Submit report of URL.",
+        description: "Submit report of URL. ID of URL is required.",
         inputSchema: z.object({
             id: z.nanoid(),
             reason: z.enum([
@@ -151,12 +123,14 @@ server.registerTool(
     },
     async ({ id, reason, message }) => {
         const requestUrl = `${args[0]}/api/report`;
-        // console.log(`Sending POST request to '${requestUrl}'...`);
+        console.error(`Sending POST request to '${requestUrl}'...`);
         const output = await ky.post(requestUrl, {
             json: { id, reason, message },
         });
+        const data = (await output.json()) as Record<string, unknown>;
         return {
-            content: [{ type: "text", text: JSON.stringify(output.json()) }],
+            content: [{ type: "text", text: JSON.stringify(data) }],
+            structuredContent: data,
         };
     },
 );
@@ -165,7 +139,8 @@ server.registerTool(
     "get_chart_data",
     {
         title: "Get chart data",
-        description: "Get chart data (click counts) of URL.",
+        description:
+            "Get chart data (click counts) of URL. ID of URL is required.",
         inputSchema: z.object({
             id: z.nanoid(),
             startYear: z.number().positive(),
@@ -181,12 +156,14 @@ server.registerTool(
     },
     async ({ id, startYear, startMonth, endYear, endMonth }) => {
         const requestUrl = `${args[0]}/api/charts`;
-        // console.log(`Sending POST request to '${requestUrl}'...`);
-        const output = await ky.post(requestUrl, {
-            json: { id, startYear, startMonth, endYear, endMonth },
+        console.error(`Sending GET request to '${requestUrl}'...`);
+        const output = await ky.get(requestUrl, {
+            searchParams: { id, startYear, startMonth, endYear, endMonth },
         });
+        const data = (await output.json()) as Record<string, unknown>;
         return {
-            content: [{ type: "text", text: JSON.stringify(output.json()) }],
+            content: [{ type: "text", text: JSON.stringify(data) }],
+            structuredContent: data,
         };
     },
 );
@@ -194,10 +171,11 @@ server.registerTool(
 async function main() {
     const transport = new StdioServerTransport();
     await server.connect(transport);
+    console.error("lnkcnt MCP server is running");
 }
 
 void main().catch((error: unknown) => {
     const message = error instanceof Error ? error.message : String(error);
-    process.stderr.write(`Failed to start MCP server: ${message}\n`);
+    console.error(`Failed to start MCP server: ${message}\n`);
     process.exit(1);
 });

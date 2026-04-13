@@ -2,10 +2,9 @@
 	"servers": {
 		"lnkcnt-mcp": {
 			"type": "stdio",
-			"command": "pnpm",
+			"command": "node",
 			"args": [
-				"--silent",
-				"start",
+				"./dist/index.js",
 				"http://localhost:3000"
 			]
 		}

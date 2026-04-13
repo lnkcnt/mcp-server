@@ -1,0 +1,13 @@
+{
+	"servers": {
+		"lnkcnt-mcp": {
+			"type": "stdio",
+			"command": "pnpm",
+			"args": [
+				"dev",
+				"http://localhost:3000"
+			]
+		}
+	},
+	"inputs": []
+}

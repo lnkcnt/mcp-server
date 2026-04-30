@@ -18,8 +18,8 @@ importers:
         specifier: ^2.0.2
         version: 2.0.2
       zod:
-        specifier: ^4.3.6
-        version: 4.3.6
+        specifier: ^4.4.1
+        version: 4.4.1
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -878,8 +878,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@4.3.6:
-    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
+  zod@4.4.1:
+    resolution: {integrity: sha512-a6ENMBBGZBsnlSebQ/eKCguSBeGKSf4O7BPnqVPmYGtpBYI7VSqoVqw+QcB7kPRjbqPwhYTpFbVj/RqNz/CT0Q==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -1048,7 +1048,7 @@ snapshots:
 
   '@modelcontextprotocol/server@2.0.0-alpha.2(@cfworker/json-schema@4.1.1)':
     dependencies:
-      zod: 4.3.6
+      zod: 4.4.1
     optionalDependencies:
       '@cfworker/json-schema': 4.1.1
 
@@ -1860,6 +1860,6 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod@4.3.6: {}
+  zod@4.4.1: {}
 
   zwitch@2.0.4: {}

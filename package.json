@@ -11,7 +11,7 @@
     "packageManager": "pnpm@11.0.4",
     "dependencies": {
         "@cfworker/json-schema": "^4.1.1",
-        "@modelcontextprotocol/server": "2.0.0-beta.2",
+        "@modelcontextprotocol/server": "2.0.0-beta.3",
         "ky": "^2.0.2",
         "zod": "^4.4.3"
     },
@@ -19,11 +19,11 @@
         "@eslint/js": "^10.0.1",
         "@eslint/json": "^2.0.1",
         "@eslint/markdown": "^8.0.3",
-        "@types/node": "^26.1.0",
-        "eslint": "^10.6.0",
+        "@types/node": "^26.1.1",
+        "eslint": "^10.7.0",
         "globals": "^17.7.0",
         "jiti": "^2.7.0",
-        "prettier": "^3.9.4",
+        "prettier": "^3.9.5",
         "tsx": "^4.23.0",
         "typescript": "^6.0.3",
         "typescript-eslint": "^8.63.0"

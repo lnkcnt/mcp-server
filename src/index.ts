@@ -2,8 +2,11 @@ import { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
 import ky from "ky";
 import { serveStdio } from "@modelcontextprotocol/server/stdio";
+import { parseArgs } from "node:util";
 
-const args = process.argv.slice(2);
+const args = parseArgs({
+    allowPositionals: true,
+});
 
 /**
  * 새로운 MCP 서버 인스턴스를 생성합니다.
@@ -17,7 +20,7 @@ function createServer(): McpServer {
         {
             instructions:
                 "해당 MCP 서버를 사용해 lnkcnt 서비스와 상호작용할 수 있습니다.\n" +
-                "사용자가 URL의 단축을 요청한다면 해당 MCP 서버를 사용하세요.",
+                "사용자가 URL의 단축을 요청하거나, 'lnkcnt'를 직접 언급한다면 해당 MCP 서버를 사용하세요.",
         }
     );
 
@@ -47,11 +50,14 @@ function createServer(): McpServer {
             }),
         },
         async ({ url }) => {
-            const requestUrl = `${args[0]}/api/url/shorten`;
+            const requestUrl = `${args.positionals[0]}/api/url/shorten`;
             console.error(`Sending POST request to '${requestUrl}'...`);
-            const output = await ky.post(`${args[0]}/api/url/shorten`, {
-                json: { url },
-            });
+            const output = await ky.post(
+                `${args.positionals[0]}/api/url/shorten`,
+                {
+                    json: { url },
+                }
+            );
             const data = (await output.json()) as Record<string, unknown>;
             return {
                 content: [{ type: "text", text: JSON.stringify(data) }],
@@ -82,7 +88,7 @@ function createServer(): McpServer {
             }),
         },
         async ({ id }) => {
-            const requestUrl = `${args[0]}/api/url/manage`;
+            const requestUrl = `${args.positionals[0]}/api/url/manage`;
             console.error(`Sending GET request to '${requestUrl}'...`);
             const output = await ky.get(requestUrl, { searchParams: { id } });
             const data = (await output.json()) as Record<string, unknown>;
@@ -128,7 +134,7 @@ function createServer(): McpServer {
             }),
         },
         async ({ id, reason, message }) => {
-            const requestUrl = `${args[0]}/api/report`;
+            const requestUrl = `${args.positionals[0]}/api/report`;
             console.error(`Sending POST request to '${requestUrl}'...`);
             const output = await ky.post(requestUrl, {
                 json: { id, reason, message },
@@ -164,7 +170,7 @@ function createServer(): McpServer {
             }),
         },
         async ({ id, startYear, startMonth, endYear, endMonth }) => {
-            const requestUrl = `${args[0]}/api/charts`;
+            const requestUrl = `${args.positionals[0]}/api/charts`;
             console.error(`Sending GET request to '${requestUrl}'...`);
             const output = await ky.get(requestUrl, {
                 searchParams: { id, startYear, startMonth, endYear, endMonth },
@@ -181,8 +187,17 @@ function createServer(): McpServer {
 }
 
 async function main() {
-    // const transport = new StdioServerTransport();
-    // await server.connect(transport);
+    const urlValidator = z.url();
+    const url = urlValidator.safeParse(args.positionals[0]);
+
+    if (!args.positionals[0]) {
+        console.error("ERROR: lnkcnt 인스턴스 URL이 제공되지 않았습니다.");
+        process.exit(2);
+    } else if (!url.success) {
+        console.error("ERROR: lnkcnt 인스턴스 URL이 올바르지 않습니다.");
+        process.exit(2);
+    }
+
     process.on("SIGINT", () => {
         console.error("Exitting...");
         process.exit(0);

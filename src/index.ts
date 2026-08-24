@@ -36,7 +36,7 @@ function createServer(): McpServer {
             description:
                 "Shorten a URL and returns shorten ID & Management page ID.\n" +
                 `Shortened URL is ${instanceUrl}/{id}.\n` +
-                `Management Page is ${instanceUrl}/manage/{managePage}.`,
+                `Management Page is on ${instanceUrl}/manage/{managePage}.`,
             inputSchema: z.object({ url: z.httpUrl() }),
             outputSchema: z.object({
                 message: z.enum([

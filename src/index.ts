@@ -7,7 +7,7 @@ import { parseArgs } from "node:util";
 const args = parseArgs({
     allowPositionals: true,
 });
-const urlValidator = z.httpUrl();
+const urlValidator = z.url();
 const url = urlValidator.safeParse(args.positionals[0]);
 
 /**

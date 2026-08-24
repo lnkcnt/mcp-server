@@ -7,11 +7,16 @@ import { parseArgs } from "node:util";
 const args = parseArgs({
     allowPositionals: true,
 });
+const urlValidator = z.httpUrl();
+const url = urlValidator.safeParse(args.positionals[0]);
 
 /**
  * 새로운 MCP 서버 인스턴스를 생성합니다.
  */
 function createServer(): McpServer {
+    const instanceUrl = url.data!.endsWith("/")
+        ? url.data?.slice(0, -1)
+        : url.data;
     const server = new McpServer(
         {
             name: "lnkcnt-mcp",
@@ -29,7 +34,9 @@ function createServer(): McpServer {
         {
             title: "Shorten URL",
             description:
-                "Shorten a URL and returns shortened URL & Management page ID.",
+                "Shorten a URL and returns shorten ID & Management page ID.\n" +
+                `Shortened URL is ${instanceUrl}/{id}.\n` +
+                `Management Page is ${instanceUrl}/manage/{managePage}.`,
             inputSchema: z.object({ url: z.httpUrl() }),
             outputSchema: z.object({
                 message: z.enum([
@@ -70,7 +77,9 @@ function createServer(): McpServer {
         "get_url_info",
         {
             title: "Get URL information",
-            description: "Get URL information based on management ID.",
+            description:
+                "Get URL information based on management ID.\n" +
+                `Shortened URL is ${instanceUrl}/{id}.`,
             inputSchema: z.object({ id: z.string().length(32) }),
             outputSchema: z.object({
                 id: z.optional(z.nanoid()),
@@ -148,11 +157,11 @@ function createServer(): McpServer {
     );
 
     server.registerTool(
-        "get_chart_data",
+        "get_url_stats",
         {
-            title: "Get chart data",
+            title: "Get URL stats",
             description:
-                "Get chart data (click counts) of URL. ID of URL is required.",
+                "Gets stat (click counts) of shortened URL. ID of URL is required.",
             inputSchema: z.object({
                 id: z.nanoid(),
                 startYear: z.number().positive(),
@@ -187,9 +196,6 @@ function createServer(): McpServer {
 }
 
 async function main() {
-    const urlValidator = z.url();
-    const url = urlValidator.safeParse(args.positionals[0]);
-
     if (!args.positionals[0]) {
         console.error("ERROR: lnkcnt 인스턴스 URL이 제공되지 않았습니다.");
         process.exit(2);

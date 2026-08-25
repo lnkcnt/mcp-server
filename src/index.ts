@@ -39,13 +39,13 @@ function createServer(): McpServer {
                 `Management Page is on ${instanceUrl}/manage/{managePage}.`,
             inputSchema: z.object({ url: z.httpUrl() }),
             outputSchema: z.object({
+                success: z.boolean(),
                 message: z.enum([
                     "URL generated successfully.",
                     "This URL is not allowed",
                     "URL is invalid",
                     "Invalid JSON body",
                 ]),
-                success: z.boolean(),
                 generatedId: z.optional(z.nanoid()),
                 managePage: z.optional(z.string().length(32)),
                 errors: z.optional(
@@ -82,18 +82,20 @@ function createServer(): McpServer {
                 `Shortened URL is ${instanceUrl}/{id}.`,
             inputSchema: z.object({ id: z.string().length(32) }),
             outputSchema: z.object({
-                id: z.optional(z.nanoid()),
-                redirect_url: z.optional(z.httpUrl()),
-                click_count: z.optional(z.number().nonnegative()),
-                clicks: z.optional(z.array(z.iso.datetime())),
-                error: z.optional(
+                success: z.boolean(),
+                message: z.optional(
                     z.enum([
+                        "Request successful.",
                         "Internal server error",
                         "Link not found",
                         "Link data not found",
                         "Bad Request: id required",
                     ])
                 ),
+                id: z.optional(z.nanoid()),
+                redirect_url: z.optional(z.httpUrl()),
+                click_count: z.optional(z.number().nonnegative()),
+                clicks: z.optional(z.array(z.iso.datetime())),
             }),
         },
         async ({ id }) => {
@@ -170,6 +172,8 @@ function createServer(): McpServer {
                 endMonth: z.optional(z.number().min(1).max(12)),
             }),
             outputSchema: z.object({
+                success: z.boolean(),
+                message: z.string(),
                 data: z.array(
                     z.object({
                         date: z.iso.date(),

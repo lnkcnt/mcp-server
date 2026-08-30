@@ -40,12 +40,7 @@ function createServer(): McpServer {
             inputSchema: z.object({ url: z.httpUrl() }),
             outputSchema: z.object({
                 success: z.boolean(),
-                message: z.enum([
-                    "URL generated successfully.",
-                    "This URL is not allowed",
-                    "URL is invalid",
-                    "Invalid JSON body",
-                ]),
+                message: z.string(),
                 generatedId: z.optional(z.nanoid()),
                 managePage: z.optional(z.string().length(32)),
                 errors: z.optional(
@@ -83,15 +78,7 @@ function createServer(): McpServer {
             inputSchema: z.object({ id: z.string().length(32) }),
             outputSchema: z.object({
                 success: z.boolean(),
-                message: z.optional(
-                    z.enum([
-                        "Request successful.",
-                        "Internal server error",
-                        "Link not found",
-                        "Link data not found",
-                        "Bad Request: id required",
-                    ])
-                ),
+                message: z.optional(z.string()),
                 id: z.optional(z.nanoid()),
                 redirect_url: z.optional(z.httpUrl()),
                 click_count: z.optional(z.number().nonnegative()),
@@ -134,14 +121,7 @@ function createServer(): McpServer {
             outputSchema: z.object({
                 success: z.boolean(),
                 reportId: z.optional(z.number().nonnegative()),
-                error: z.optional(
-                    z.enum([
-                        "Internal server error",
-                        "Invalid values",
-                        "Link not found",
-                        "Missing required fields",
-                    ])
-                ),
+                error: z.optional(z.string()),
             }),
         },
         async ({ id, reason, message }) => {

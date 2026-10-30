@@ -82,7 +82,9 @@ function createServer(): McpServer {
                 id: z.optional(z.nanoid()),
                 redirect_url: z.optional(z.httpUrl()),
                 click_count: z.optional(z.number().nonnegative()),
-                clicks: z.optional(z.array(z.iso.datetime())),
+                clicks: z.optional(
+                    z.array(z.object({ date: z.iso.datetime() }))
+                ),
             }),
         },
         async ({ id }) => {
@@ -143,9 +145,9 @@ function createServer(): McpServer {
         {
             title: "Get URL stats",
             description:
-                "Gets stat (click counts) of shortened URL. ID of URL is required.",
+                "Gets stat (click counts) of shortened URL. Management ID is required.",
             inputSchema: z.object({
-                id: z.nanoid(),
+                id: z.string().length(32),
                 startYear: z.number().positive(),
                 startMonth: z.number().min(1).max(12),
                 endYear: z.optional(z.number().positive()),

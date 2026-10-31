@@ -1,12 +1,17 @@
 # lnkcnt-mcp-server
 
-이 프로젝트는 pnpm 기반의 최소 MCP 서버 템플릿입니다.
+lnkcnt를 LLM으로 이용하세요!
 
-## 포함 기능
+## 포함된 도구
 
-- `health_check`: 서버 가동 상태 확인
-- `echo_text`: 입력 문자열을 그대로 반환
-- `current_time`: 서버 시간 반환
+- `shorten_url`: URL 단축
+- `get_url_info`: 관리 ID로 정보 얻기
+- `report_url`: URL 신고
+- `get_url_stats`: URL 관리 ID로 통계 얻기
+
+## 요구 사항
+
+- pnpm
 
 ## 실행
 
@@ -14,29 +19,21 @@
 
     `pnpm install`
 
-2. 개발 실행
-
-    `pnpm dev`
-
-3. 빌드
+2. 빌드
 
     `pnpm build`
 
-4. 실행 파일로 구동
+3. MCP 클라이언트(Codex, Claude Code, Antigravity 등)에 등록
 
-    `pnpm start`
-
-## 클라이언트 설정 예시
-
-stdio 방식으로 실행되는 로컬 MCP 서버이므로, 클라이언트에는 다음처럼 등록하면 됩니다.
+예시:
 
 ```json
 {
     "mcpServers": {
         "lnkcnt-mcp-server": {
             "command": "pnpm",
-            "args": ["dev"],
-            "cwd": "/Users/pji2918/RemoteProjects/lnkcnt-mcp"
+            "args": ["start", "lnkcnt-instance-url"],
+            "cwd": "/your-project-path/lnkcnt-mcp"
         }
     }
 }

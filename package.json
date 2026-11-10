@@ -9,9 +9,9 @@
         "fmt": "prettier . --write",
         "build": "tsc && chmod 755 dist/index.js"
     },
-    "packageManager": "pnpm@11.0.4",
+    "packageManager": "pnpm@12.18.0",
     "dependencies": {
-        "@cfworker/json-schema": "^4.1.4",
+        "@cfworker/json-schema": "^4.1.6",
         "@modelcontextprotocol/server": "2.4.0",
         "ky": "^2.2.0",
         "zod": "^4.6.7"
@@ -22,7 +22,7 @@
         "@eslint/markdown": "^8.0.3",
         "@types/node": "^26.6.6",
         "eslint": "^10.14.0",
-        "globals": "^17.13.0",
+        "globals": "^17.14.0",
         "jiti": "^2.7.0",
         "prettier": "^3.9.10",
         "tsx": "^4.23.15",
